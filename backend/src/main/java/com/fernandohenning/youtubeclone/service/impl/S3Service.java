@@ -21,7 +21,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class S3Service implements FileService {
+public class    S3Service implements FileService {
 
     private final AmazonS3 amazonS3;
 
