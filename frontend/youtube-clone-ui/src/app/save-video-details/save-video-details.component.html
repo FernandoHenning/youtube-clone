@@ -1,1 +1,65 @@
-<p>save-video-details works!</p>
+<mat-grid-list [cols]=5 rowHeight="1:2">
+  <mat-grid-tile></mat-grid-tile>
+
+
+  <mat-grid-tile colspan="2">
+    <UploadVideoComponent></UploadVideoComponent>
+    <mat-card>
+
+      <mat-card-header>
+        <mat-card-title>Video information</mat-card-title>
+        <mat-card-subtitle>Fill all the information</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="saveVideoDetailsForm">
+          <div  class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Title</mat-label>
+              <input [formControl]="title" matInput required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <input [formControl]="description" matInput required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Video Status</mat-label>
+              <mat-select required [formControl]="videoStatus">
+                <mat-option value="PUBLIC">Public</mat-option>
+                <mat-option value="PRIVATE">Private</mat-option>
+                <mat-option value="UNLISTED">Unlisted</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="example-chip-list" appearance="fill">
+              <mat-label>Video tags</mat-label>
+              <mat-chip-list #chipGrid aria-label="Enter tags">
+                <mat-chip *ngFor="let tag of tags"  (removed)="remove(tag)"  [contentEditable]="true">
+                  {{tag}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input placeholder="Add new tag ..." [matChipInputFor]="chipGrid"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)"/>
+              </mat-chip-list>
+            </mat-form-field>
+
+          </div>
+          <button type="submit" mat-raised-button color="primary">Save</button>
+
+        </form>
+      </mat-card-content>
+
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+
+  </mat-grid-tile>
+  <mat-grid-tile></mat-grid-tile>
+</mat-grid-list>
