@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FormControl, FormGroup, FormsModule} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
 import {ActivatedRoute} from "@angular/router";
 import {VideoService} from "../video.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-save-video-details',
@@ -21,7 +22,7 @@ export class SaveVideoDetailsComponent implements OnInit {
   videoId = '';
   URL: FileReader | null | undefined ;
 
-  constructor(private activatedRoute: ActivatedRoute, private videoService: VideoService) {
+  constructor(private activatedRoute: ActivatedRoute, private videoService: VideoService, private snackBar: MatSnackBar) {
     this.videoId = this.activatedRoute.snapshot.params['videoId'];
     this.saveVideoDetailsForm = new FormGroup({
       title: this.title,
@@ -78,7 +79,13 @@ export class SaveVideoDetailsComponent implements OnInit {
   uploadThumbnail() {
     this.videoService.uploadThumbnail(this.selectedThumbnail, this.videoId).subscribe(data =>{
       console.log(data);
-      alert("Image uploaded successfully")
+      this.openSnackBar("Thumbnail uploaded sucessfully", "OK")
+    });
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
     });
   }
 }
