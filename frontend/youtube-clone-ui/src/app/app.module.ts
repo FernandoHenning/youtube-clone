@@ -25,6 +25,7 @@ import {VgCoreModule} from "@videogular/ngx-videogular/core";
 import {VgControlsModule} from "@videogular/ngx-videogular/controls";
 import {VgOverlayPlayModule} from "@videogular/ngx-videogular/overlay-play";
 import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
+import {MatDividerModule} from "@angular/material/divider";
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,6 +54,7 @@ import {VgBufferingModule} from "@videogular/ngx-videogular/buffering";
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
+    MatDividerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

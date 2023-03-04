@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
 import {MatChipInputEvent} from "@angular/material/chips";
+import {ActivatedRoute} from "@angular/router";
+import {VideoService} from "../video.service";
 
 @Component({
   selector: 'app-save-video-details',
@@ -13,10 +15,14 @@ export class SaveVideoDetailsComponent implements OnInit {
   title: FormControl = new FormControl('');
   description: FormControl = new FormControl('')
   videoStatus: FormControl = new FormControl('')
-
+  selectedThumbnail!: File;
+  thumbnailFileName!: string;
   addOnBlur = true;
+  videoId = '';
+  URL: FileReader | null | undefined ;
 
-  constructor() {
+  constructor(private activatedRoute: ActivatedRoute, private videoService: VideoService) {
+    this.videoId = this.activatedRoute.snapshot.params['videoId'];
     this.saveVideoDetailsForm = new FormGroup({
       title: this.title,
       description: this.description,
@@ -24,7 +30,8 @@ export class SaveVideoDetailsComponent implements OnInit {
     })
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   tags: string[] = [];
@@ -49,4 +56,29 @@ export class SaveVideoDetailsComponent implements OnInit {
     }
   }
 
+  onThumbnailSelected(event: Event) {
+    // @ts-ignore
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+
+      // @ts-ignore
+      this.selectedThumbnail = event.target?.files[0];
+      this.thumbnailFileName = this.selectedThumbnail?.name;
+      // @ts-ignore
+      reader.readAsDataURL(event.target.files[0]); // Read file as data url
+      reader.onloadend = (e) => { // function call once readAsDataUrl is completed
+        // @ts-ignore
+        this.URL = e.target['result']; // Set image in element
+
+      };
+    }
+  }
+
+
+  uploadThumbnail() {
+    this.videoService.uploadThumbnail(this.selectedThumbnail, this.videoId).subscribe(data =>{
+      console.log(data);
+      alert("Image uploaded successfully")
+    });
+  }
 }

@@ -1,9 +1,5 @@
-<mat-grid-list [cols]=5 rowHeight="1:2">
-  <mat-grid-tile></mat-grid-tile>
-
-
-  <mat-grid-tile colspan="2">
-    <UploadVideoComponent></UploadVideoComponent>
+<mat-grid-list [cols]=2 rowHeight="400px">
+  <mat-grid-tile  rowspan="2" colspan="1">
     <mat-card>
 
       <mat-card-header>
@@ -13,7 +9,7 @@
 
       <mat-card-content>
         <form [formGroup]="saveVideoDetailsForm">
-          <div  class="form">
+          <div class="form">
             <mat-form-field appearance="outline">
               <mat-label>Title</mat-label>
               <input [formControl]="title" matInput required>
@@ -21,7 +17,7 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Description</mat-label>
-              <input [formControl]="description" matInput required>
+              <textarea rows="4" cols="10" [formControl]="description" required matInput></textarea>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -36,7 +32,7 @@
             <mat-form-field class="example-chip-list" appearance="fill">
               <mat-label>Video tags</mat-label>
               <mat-chip-list #chipGrid aria-label="Enter tags">
-                <mat-chip *ngFor="let tag of tags"  (removed)="remove(tag)"  [contentEditable]="true">
+                <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)" [contentEditable]="true">
                   {{tag}}
                   <button matChipRemove [attr.aria-label]="'remove ' + tag">
                     <mat-icon>cancel</mat-icon>
@@ -48,18 +44,32 @@
                        (matChipInputTokenEnd)="add($event)"/>
               </mat-chip-list>
             </mat-form-field>
-
+            <div>
+              <label for="inputGroupThumbnail">Upload Thumbnail</label>
+              <div class="custom-thumbnail">
+                <input accept="image/png, image/jpeg" type="file" class="custom-file-input" id="inputGroupThumbnail"
+                       aria-describedby="inputGroupFileThumbnailAddon" (change)="onThumbnailSelected($event)">
+              </div>
+              <br>
+              <div>
+                <button type="submit" (click)="uploadThumbnail()" mat-raised-button color="accent">Upload</button>
+              </div>
+            </div>
           </div>
-          <button type="submit" mat-raised-button color="primary">Save</button>
-
+          <br>
+          <mat-divider></mat-divider>
+          <button style="margin-top: 10px" type="submit" mat-raised-button color="primary">Save</button>
         </form>
       </mat-card-content>
-
     </mat-card>
   </mat-grid-tile>
-
-  <mat-grid-tile>
-
+  <mat-grid-tile  rowspan="1" colspan="1">
+    VIDEO PLAYER
   </mat-grid-tile>
-  <mat-grid-tile></mat-grid-tile>
+  <mat-grid-tile >
+    <div style=" padding-left: 20px; margin-bottom: 100px; width:100%;" class="thumbnailPreviewGrid">
+      <h1>Thumbnail preview</h1>
+      <img class="thumbnailPreloaded" *ngIf="URL" [src]="URL" height="50%" width="50%" alt="Thumbnail uploaded for this video">
+    </div>
+  </mat-grid-tile>
 </mat-grid-list>
