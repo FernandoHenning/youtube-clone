@@ -46,6 +46,23 @@ public class VideoServiceImpl implements VideoService {
 
     }
 
+    @Override
+    public VideoDto getVideoDetails(String videoId) {
+        Video savedVideo = getVideoById(videoId);
+
+        VideoDto videoDto = new VideoDto();
+        videoDto.setVideoUrl(savedVideo.getUrl());
+        videoDto.setThumbnailUrl(savedVideo.getThumbnailUrl());
+        videoDto.setId(savedVideo.getId());
+        videoDto.setTitle(savedVideo.getTitle());
+        videoDto.setDescription(savedVideo.getDescription());
+        videoDto.setTags(savedVideo.getTags());
+        videoDto.setVideoStatus(savedVideo.getVideoStatus());
+
+        return videoDto;
+
+    }
+
     private static void mapVideoDtoToEntity(VideoDto videoDto, Video editedVideo) {
         editedVideo.setTitle(videoDto.getTitle());
         editedVideo.setDescription(videoDto.getDescription());

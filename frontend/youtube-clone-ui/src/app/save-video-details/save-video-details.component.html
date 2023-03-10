@@ -1,1 +1,81 @@
-<p>save-video-details works!</p>
+<mat-grid-list [cols]=2 rowHeight="450">
+  <!-- VIDEO DETAILS FORM -->
+  <mat-grid-tile  rowspan="2" colspan="1">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Video information</mat-card-title>
+        <mat-card-subtitle>Fill all the information</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="saveVideoDetailsForm">
+          <div class="form">
+            <mat-form-field appearance="outline">
+              <mat-label>Title</mat-label>
+              <input [formControl]="title" matInput required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea rows="4" cols="10" [formControl]="description" required matInput></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Video Status</mat-label>
+              <mat-select required [formControl]="videoStatus">
+                <mat-option value="PUBLIC">Public</mat-option>
+                <mat-option value="PRIVATE">Private</mat-option>
+                <mat-option value="UNLISTED">Unlisted</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="example-chip-list" appearance="fill">
+              <mat-label>Video tags</mat-label>
+              <mat-chip-list #chipGrid aria-label="Enter tags">
+                <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)" [contentEditable]="true">
+                  {{tag}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + tag">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip>
+                <input placeholder="Add new tag ..." [matChipInputFor]="chipGrid"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)"/>
+              </mat-chip-list>
+            </mat-form-field>
+            <div>
+              <label for="inputGroupThumbnail">Upload Thumbnail</label>
+              <div class="custom-thumbnail">
+                <input accept="image/png, image/jpeg" type="file" class="custom-file-input" id="inputGroupThumbnail"
+                       aria-describedby="inputGroupFileThumbnailAddon" (change)="onThumbnailSelected($event)">
+              </div>
+              <br>
+              <div>
+                <button type="button" *ngIf="URL" (click)="uploadThumbnail()" mat-raised-button color="accent">Upload</button>
+              </div>
+            </div>
+          </div>
+          <br>
+          <mat-divider></mat-divider>
+          <button style="margin-top: 10px" type="submit" mat-raised-button color="primary" (click)="saveVideo()">Save</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+  <!-- VIDEO PLAYER -->
+  <mat-grid-tile  rowspan="1" colspan="1">
+    <div style=" padding-left: 20px; margin-top: 100px; width:100%;">
+      <h2>Video preview</h2>
+      <app-video-player [videoUrl] = "videoUrl" class="videoPlayer"></app-video-player>
+    </div>
+
+  </mat-grid-tile>
+  <!-- THUMBNAIL PREVIEW -->
+  <mat-grid-tile >
+    <div style=" padding-left: 20px; margin-bottom: 100px; width:100%;" class="thumbnailPreviewGrid">
+      <h2>Thumbnail preview</h2>
+      <img class="thumbnailPreloaded" *ngIf="URL" [src]="URL" height="50%" width="50%" alt="Thumbnail uploaded for this video">
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
