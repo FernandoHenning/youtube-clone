@@ -11,4 +11,6 @@ public interface VideoService {
     VideoDto editVideoMetaData(VideoDto videoDto);
 
     String uploadThumbnail(MultipartFile file, String videoId);
+
+    VideoDto getVideoDetails(String videoId);
 }
